@@ -4,6 +4,8 @@ import org.hibernate.resource.jdbc.spi.StatementInspector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import java.util.Objects;
+
 @Component
 public class QueryCounterInspector implements StatementInspector {
     private final QueryCounter queryCounter;
@@ -21,6 +23,6 @@ public class QueryCounterInspector implements StatementInspector {
     }
 
     private boolean isRequest() {
-        return RequestContextHolder.getRequestAttributes() != null;
+        return Objects.nonNull(RequestContextHolder.getRequestAttributes());
     }
 }

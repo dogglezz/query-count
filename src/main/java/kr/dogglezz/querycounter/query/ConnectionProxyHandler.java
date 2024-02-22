@@ -1,8 +1,8 @@
 package kr.dogglezz.querycounter.query;
 
-import org.springframework.cglib.proxy.InvocationHandler;
-
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 public class ConnectionProxyHandler implements InvocationHandler {
     private static final String PREPARE_STATEMENT_METHOD_NAME = "prepareStatement";
@@ -19,7 +19,10 @@ public class ConnectionProxyHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object invoke = method.invoke(target, args);
         if (isPrepareStatement(method)) {
-            queryCounter.increment();
+            return Proxy.newProxyInstance(
+                    invoke.getClass().getClassLoader(),
+                    invoke.getClass().getInterfaces(),
+                    new PreparedStatementProxyHandler(invoke, queryCounter));
         }
         return invoke;
     }

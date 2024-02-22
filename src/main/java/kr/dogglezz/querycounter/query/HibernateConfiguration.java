@@ -4,7 +4,9 @@ import org.hibernate.cfg.JdbcSettings;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
+@Profile("hibernate")
 @Configuration
 public class HibernateConfiguration {
 
